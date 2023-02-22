@@ -1,0 +1,17 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="vertx-launcher" type="Application" factoryName="Application">
+    <envs>
+      <env name="SERVER_PORT" value="8888" />
+    </envs>
+    <option name="MAIN_CLASS_NAME" value="com.example.starter.MainVerticle" />
+    <module name="starter" />
+    <extension name="software.aws.toolkits.jetbrains.core.execution.JavaAwsConnectionExtension">
+      <option name="credential" />
+      <option name="region" />
+      <option name="useCurrentConnection" value="false" />
+    </extension>
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

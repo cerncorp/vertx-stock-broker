@@ -1,0 +1,16 @@
+### GET request with a header
+GET http://localhost:8888/assets
+Accept: application/json
+
+#http://localhost:8888/assets
+#
+#HTTP/1.1 200 OK
+#content-length: 91
+#
+#[{"symbol":"AAPL"},{"symbol":"AMZN"},{"symbol":"NFLX"},{"symbol":"TSLA"},{"symbol":"NEUR"}]
+#
+#Response code: 200 (OK); Time: 162ms (162 ms); Content length: 91 bytes (91 B)
+
+### GET request with a header
+GET http://localhost:8888/a
+Accept: application/json
