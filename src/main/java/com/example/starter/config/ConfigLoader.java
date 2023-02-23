@@ -18,8 +18,16 @@ public class ConfigLoader {
   public static final String VERSION = "version";
   private static final Logger LOG = LoggerFactory.getLogger(ConfigLoader.class);
   public static final String SERVER_PORT = "SERVER_PORT";
-  public static final List<String> EXPOSED_ENVIRONMENT_VARIABLES = Arrays.asList(SERVER_PORT);
   public static final String CONFIG_FILE = "application.yml";
+
+  public static final String DB_HOST = "DB_HOST";
+  public static final String DB_DATABASE = "DB_DATABASE";
+  public static final String DB_PORT = "DB_PORT";
+  public static final String DB_USER = "DB_USER";
+  public static final String DB_PASSWORD = "DB_PASSWORD";
+  public static final List<String> EXPOSED_ENVIRONMENT_VARIABLES = Arrays
+    .asList(SERVER_PORT, DB_HOST, DB_USER, DB_DATABASE, DB_PASSWORD, DB_PORT);
+
 
   public static Future<BrokerConfig> load(Vertx vertx) {
 

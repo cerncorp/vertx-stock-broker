@@ -17,17 +17,17 @@ public class FlywayMigration {
 
   public static final Logger LOG = LoggerFactory.getLogger(FlywayMigration.class);
   public static Future<Void> migrate(final Vertx vertx, final DbConfig dbConfig) {
-
-    return vertx.executeBlocking(promise -> {
+    LOG.debug("DB Config: {}", dbConfig);
+    return vertx.<Void>executeBlocking(promise -> {
 //      Flyway migration is blocking => use JDBC
       execute(dbConfig);
       promise.complete();
     })
-      .onFailure(err -> LOG);
+      .onFailure(err -> LOG.error("Failed to migrate db schema with error: {}", err));
   }
 
   private static void execute(DbConfig dbConfig) {
-    final String jdbcUrl = String.format("jdbc:postgresl://%s:%d/%s",
+    final String jdbcUrl = String.format("jdbc:postgresql://%s:%d/%s",
        dbConfig.getHost(),
        dbConfig.getPort(),
        dbConfig.getDatabase());
@@ -39,6 +39,7 @@ public class FlywayMigration {
       .schemas("broker")
       .defaultSchema("broker")
       .load();
+
 
     var current = Optional.ofNullable(flyway.info().current());
     current.ifPresent(info -> LOG.info("db schema is at version " + info.getVersion()));
