@@ -1,8 +1,8 @@
 package com.example.starter.watchlist;
 
+import com.example.starter.db.DbResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.vertx.core.Handler;
-import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,14 +28,7 @@ public class GetWatchListHandler implements Handler<RoutingContext> {
     LOG.debug("{} for account {}", context.normalizedPath(), accountId);
     var watchListPerAccount = Optional.ofNullable(watchListPerAccountList.get(UUID.fromString(accountId)));
     if (watchListPerAccount.isEmpty()) {
-      context.response()
-        .setStatusCode(HttpResponseStatus.NOT_FOUND.code())
-        .end(
-          new JsonObject()
-            .put("message", "watchList for accountId " + accountId + " does not exist!")
-            .put("path", context.normalizedPath())
-            .toBuffer()
-        );
+      DbResponse.notFound(context, "watchList for accountId " + accountId + " does not exist!");
       return;
     }
 

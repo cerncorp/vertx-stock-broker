@@ -1,6 +1,6 @@
 package com.example.starter.quotes;
 
-import io.netty.handler.codec.http.HttpResponseStatus;
+import com.example.starter.db.DbResponse;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
@@ -25,14 +25,7 @@ public class GetQuotesHandler implements Handler<RoutingContext> {
 
     final Optional<Quote> quote = Optional.ofNullable(cachedQuotes.get(assetParam));
     if (quote.isEmpty()) {
-      context.response()
-        .setStatusCode(HttpResponseStatus.NOT_FOUND.code())
-        .end(
-          new JsonObject()
-            .put("message", "quote for asset " + assetParam + " does not exist!")
-            .put("path", context.normalizedPath())
-            .toBuffer()
-        );
+      DbResponse.notFound(context, "quote for asset " + assetParam + " does not exist!");
       return;
     }
 

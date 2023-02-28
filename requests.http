@@ -14,3 +14,64 @@ Accept: application/json
 ### GET request with a header
 GET http://localhost:8888/a
 Accept: application/json
+
+### GET request with a header
+GET http://localhost:8888/quotes/TSLA
+Accept: application/json
+
+### GET request with a header
+GET http://localhost:8888/pg/assets
+Accept: application/json
+
+### GET request with a header
+GET http://localhost:8888/pg/quotes/AMZN
+Accept: application/json
+
+#{
+#  "asset": {
+#    "symbol": "AMZN"
+#  },
+#  "bid": 44,
+#  "ask": 33,
+#  "volume": 11,
+#  "last_price": 22
+#}
+
+### GET request with a header
+GET http://localhost:8888/pg/quotes/NFLX
+Accept: application/json
+
+
+### GET request with a header
+GET http://localhost:8888/pg/account/watchList/3
+Accept: application/json
+
+#http://localhost:8888/pg/account/watchList/1
+#
+#HTTP/1.1 200 OK
+#content-type: application/json
+#content-length: 35
+#
+#[
+#  {
+#    "asset": "AMZN"
+#  },
+#  {
+#    "asset": "TSLA"
+#  }
+#]
+
+###
+PUT http://localhost:8888/pg/account/watchList/3
+Content-Type: application/json
+
+{
+  "assets": [
+    {
+      "symbol": "AMZN"
+    },
+    {
+      "symbol": "TSLA"
+    }
+  ]
+}
