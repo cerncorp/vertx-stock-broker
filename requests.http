@@ -62,7 +62,7 @@ Accept: application/json
 #]
 
 ###
-PUT http://localhost:8888/pg/account/watchList/3
+PUT http://localhost:8888/pg/account/watchList/5
 Content-Type: application/json
 
 {
@@ -72,6 +72,14 @@ Content-Type: application/json
     },
     {
       "symbol": "TSLA"
+    },
+    {
+      "symbol": "NFLX"
     }
   ]
 }
+
+
+###
+DELETE http://localhost:8888/pg/account/watchList/5
+Content-Type: application/json

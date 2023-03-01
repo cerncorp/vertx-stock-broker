@@ -35,7 +35,15 @@ public static final String PATH_WATCH_LIST_ACCOUNT_ID = "/account/watchList/:acc
 
     // PG PUT
     parent.put(PG_PATH_WATCH_LIST_ACCOUNT_ID).handler(new PutWatchListFromDatabaseHandler(db));
+//    .failureHandler(frc -> {
+//      Throwable failure = frc.failure();
+////      if (failure instanceof PostNotFoundException) {
+////        frc.response().setStatusCode(404).end();
+////      }
+//      frc.response().setStatusCode(500).setStatusMessage("Server internal error:" + failure.getMessage()).end();
+//    });
 
+    parent.delete(PG_PATH_WATCH_LIST_ACCOUNT_ID).handler(new DeleteWatchListFromDatabaseHandler(db));
 
   }
 

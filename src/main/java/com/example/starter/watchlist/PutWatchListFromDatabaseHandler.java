@@ -11,6 +11,8 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class PutWatchListFromDatabaseHandler implements Handler<RoutingContext> {
 
@@ -30,26 +32,32 @@ public class PutWatchListFromDatabaseHandler implements Handler<RoutingContext> 
 
     var watchList = json.mapTo(WatchList.class);
 
-    watchList.getAssets().forEach(asset -> {
+//    watchList.getAssets().forEach(asset -> {
 
-      final HashMap<String, Object> params = new HashMap<>();
-      params.put("account_id", accountId);
-      params.put("asset", asset.getSymbol());
-      SqlTemplate.forUpdate(db,
-          "INSERT INTO broker.watchlist VALUES (#{account_id}, #{asset})")
-        .execute(params)
-        .onFailure(DbResponse.errorHandler(context, "Failed to insert into watchlist"))
-        .onSuccess(result -> {
-          if (!context.response().ended()) {
-            context.response()
-              .setStatusCode(HttpResponseStatus.NO_CONTENT.code())
-              .end();
-          }
-        });
+    var parameterBatch = watchList.getAssets().stream()
+      .map(asset -> {
+        final Map<String, Object> parameters = new HashMap<>();
+        parameters.put("account_id", accountId);
+        parameters.put("asset", asset.getSymbol());
+        return parameters;
+      }).collect(Collectors.toList());
 
+    // Only adding is possible -> Entries for watch list are never removed
+    SqlTemplate.forUpdate(db,
+        "INSERT INTO broker.watchlist VALUES (#{account_id}, #{asset})"
+       + " ON CONFLICT (account_id, asset) DO NOTHING")
+//      .execute(params) // execute each
+      .executeBatch(parameterBatch)
+      .onFailure(DbResponse.errorHandler(context, "Failed to insert into watchlist"))
+      .onSuccess(result -> {
+//        if (!context.response().ended()) { // execute each
+          context.response()
+            .setStatusCode(HttpResponseStatus.NO_CONTENT.code())
+            .end();
+//        }
+      });
 
-    });
-
+//    });
 
   }
 }
